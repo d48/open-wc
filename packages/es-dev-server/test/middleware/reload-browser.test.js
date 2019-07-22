@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import AbortController from 'abort-controller';
 import path from 'path';
 import fs from 'fs';
-import { startServer } from '../../src/server.js';
+import { startServer } from '../../src/es-dev-server.js';
 import { messageChannelEndpoint } from '../../src/constants.js';
 import { AsyncStream, timeout } from '../test-helpers.js';
 

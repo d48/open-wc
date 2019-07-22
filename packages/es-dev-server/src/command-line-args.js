@@ -6,7 +6,12 @@ import camelcase from 'camelcase';
 import fs from 'fs';
 import deepmerge from 'deepmerge';
 
-export default function readCommandLineArgs(argv = process.argv) {
+/**
+ * Reads command line args from arguments array. Defaults to `process.argv`.
+ *
+ * @param {string[]} [argv]
+ */
+export function readCommandLineArgs(argv = process.argv) {
   const optionDefinitions = [
     {
       name: 'config',

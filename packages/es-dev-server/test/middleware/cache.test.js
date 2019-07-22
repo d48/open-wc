@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import fetch from 'node-fetch';
 import path from 'path';
 import fs from 'fs';
-import { startServer } from '../../src/server.js';
+import { startServer } from '../../src/es-dev-server.js';
 
 const host = 'http://localhost:8080/';
 

@@ -374,6 +374,93 @@ Compatibility mode enables bundle-free development with features such as es modu
 
 </details>
 
+## Using es-dev-server programmatically
+You can use different components from `es-dev-server` as a library and integrate with other tools:
+
+<details>
+
+<summary>Read more</summary>
+
+### createConfig
+When using the server from javascript you are going to need a config object to tell the server what options to turn on and off. It's best to use `createConfig` for this as this converts the public API to an internal config structure and sets up default values. By default all options besides static file serving is turned off, so it's easy to configure based on your own requirements.
+
+The config structure is the same as the `es-dev-server.config.js` structure explained above.
+
+```javascript
+import { createConfig } from 'es-dev-server';
+
+const config = createConfig({
+  http2: true,
+  babel: true,
+  open: true,
+});
+```
+
+### createMiddlewares
+`createMiddlewares` creates the dev server's middlewares based on your configuration. You can use this to hook them up to your own koa server.
+
+Returns an array of koa middleware functions.
+
+```javascript
+import Koa from 'koa';
+import { createConfig, createMiddlewares } from 'es-dev-server';
+
+const config = createConfig({ });
+const middlewares = createMiddlewares(config);
+
+const app = new Koa();
+middlewares.forEach(middleware => {
+  app.use(middleware);
+});
+```
+
+### createServer
+`createServer` creates an instance of the dev server including all middlewares without starting the server. This useful if you want to be in control of starting the server yourself.
+
+Returns the koa app and a node http or http2 server.
+
+```javascript
+import Koa from 'koa';
+import { createConfig, createServer } from 'es-dev-server';
+
+const config = createConfig({ ... });
+const { app, server } = createServer(config);
+server.listen(3000);
+```
+
+### watch mode
+`createMiddlewares` and `createServer` requires a chokidar fileWatcher if watch mode is enabled. You need to pass this separately because the watcher needs to be killed explicitly when the server closes.
+```javascript
+import Koa from 'koa';
+import chokidar from 'chokidar';
+import { createConfig, createMiddlewares, createServer } from 'es-dev-server';
+
+const config = createConfig({ ... });
+const fileWatcher = chokidar.watch([]);
+
+// if using createMiddlewares
+createMiddlewares(config, fileWatcher);
+// if using createServer
+createServer(config, fileWatcher);
+
+// close filewatcher when no longer necessary
+fileWatcher.close();
+```
+
+### startServer
+`startServer` creates and starts the server, listening on the configured port. Opens the browser if configured and logs a startup message.
+
+Returns the koa app and a node http or http2 server.
+
+```javascript
+import Koa from 'koa';
+import { createConfig, startServer } from 'es-dev-server';
+
+const config = createConfig({ ... });
+const { app, server } = startServer(config, fileWatcher);
+```
+
+</details>
 
 <script>
   export default {

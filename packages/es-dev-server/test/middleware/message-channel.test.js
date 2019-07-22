@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import fetch from 'node-fetch';
 import AbortController from 'abort-controller';
 import path from 'path';
-import { startServer } from '../../src/server.js';
+import { startServer } from '../../src/es-dev-server.js';
 import { messageChannelEndpoint } from '../../src/constants.js';
 import { AsyncStream, timeout } from '../test-helpers.js';
 import { sendMessageToActiveBrowsers } from '../../src/middleware/message-channel.js';
